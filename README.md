@@ -1,3 +1,13 @@
+Running remix vite custom server with https:
+
+```sh
+mkcert -install
+mkcert localhost
+pnpm dev
+```
+
+---
+
 # templates/unstable-vite-express
 
 ⚠️ Remix support for Vite is unstable and not recommended for production.

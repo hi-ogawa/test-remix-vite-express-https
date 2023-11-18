@@ -5,15 +5,25 @@ import {
 import { createRequestHandler } from "@remix-run/express";
 import { installGlobals } from "@remix-run/node";
 import express from "express";
+import https from "node:https";
+import fs from "node:fs";
 
 installGlobals();
+
+const app = express();
+
+const server = https.createServer(
+  {
+    key: fs.readFileSync("localhost-key.pem"),
+    cert: fs.readFileSync("localhost.pem"),
+  },
+  app
+);
 
 let vite =
   process.env.NODE_ENV === "production"
     ? undefined
     : await unstable_createViteServer();
-
-const app = express();
 
 // handle asset requests
 if (vite) {
@@ -37,4 +47,4 @@ app.all(
 );
 
 const port = 3000;
-app.listen(port, () => console.log("http://localhost:" + port));
+server.listen(port, () => console.log("https://localhost:" + port));
