@@ -1,12 +1,25 @@
-Running remix vite custom server with https:
+Example to run remix vite custom server with https.
+See [2nd commit](https://github.com/hi-ogawa/test-remix-vite-express-https/commit/ed6469721b922b021417cbcca493b4770d971044) for the essential changes from the original template.
+
+Use https://github.com/FiloSottile/mkcert to manage local certificates.
 
 ```sh
 mkcert -install
+
+# generate localhost.pem and localhost-key.pem
 mkcert localhost
+
+# run dev server then open https://localhost:3000
 pnpm dev
+
+# run production server
+pnpm build
+pnpm start
 ```
 
 ---
+
+(original README.md)
 
 # templates/unstable-vite-express
 
