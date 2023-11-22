@@ -7,6 +7,7 @@ import { installGlobals } from "@remix-run/node";
 import express from "express";
 import https from "node:https";
 import fs from "node:fs";
+import { createServer } from "vite";
 
 installGlobals();
 
@@ -20,10 +21,14 @@ const server = https.createServer(
   app
 );
 
-let vite =
-  process.env.NODE_ENV === "production"
-    ? undefined
-    : await unstable_createViteServer();
+let vite = await createServer({
+  server: {
+    middlewareMode: true,
+    hmr: {
+      server,
+    }
+  }
+})
 
 // handle asset requests
 if (vite) {

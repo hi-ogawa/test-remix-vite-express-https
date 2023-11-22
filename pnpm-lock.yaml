@@ -4,6 +4,11 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  '@remix-run/dev@2.3.0':
+    hash: 363xtlwyp5hor6nq73ocrxyc7a
+    path: patches/@remix-run__dev@2.3.0.patch
+
 dependencies:
   '@remix-run/express':
     specifier: ^2.3.0
@@ -30,7 +35,7 @@ dependencies:
 devDependencies:
   '@remix-run/dev':
     specifier: ^2.3.0
-    version: 2.3.0(typescript@5.2.2)(vite@5.0.0)
+    version: 2.3.0(patch_hash=363xtlwyp5hor6nq73ocrxyc7a)(typescript@5.2.2)(vite@5.0.0)
   '@remix-run/eslint-config':
     specifier: ^2.3.0
     version: 2.3.0(eslint@8.54.0)(react@18.2.0)(typescript@5.2.2)
@@ -1287,7 +1292,7 @@ packages:
     dev: true
     optional: true
 
-  /@remix-run/dev@2.3.0(typescript@5.2.2)(vite@5.0.0):
+  /@remix-run/dev@2.3.0(patch_hash=363xtlwyp5hor6nq73ocrxyc7a)(typescript@5.2.2)(vite@5.0.0):
     resolution: {integrity: sha512-Eno0XHyIKo5GyzN4OAwNkgkyl4H1mLWbqeVUA8T5HmVDj+8qJLIcYeayS2BmA1KYAHJBiy5ufAGi2MpaXMjKww==}
     engines: {node: '>=18.0.0'}
     hasBin: true
@@ -1376,6 +1381,7 @@ packages:
       - ts-node
       - utf-8-validate
     dev: true
+    patched: true
 
   /@remix-run/eslint-config@2.3.0(eslint@8.54.0)(react@18.2.0)(typescript@5.2.2):
     resolution: {integrity: sha512-iyuNO7tRjevLjwGH4nLv/6g5NROhUXIQHTNjTUhQjEkHac4/kp3EOnnQEtGmMUfLruTyz6OoOJQzTkT3l14VvQ==}

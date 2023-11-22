@@ -7,5 +7,5 @@ export function loader() {
 
 export default function Route() {
   const loaderData = useLoaderData<typeof loader>();
-  return <div>{loaderData}</div>;
+  return <div>{loaderData} hmr?</div>;
 }

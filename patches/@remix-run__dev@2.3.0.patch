@@ -1,0 +1,13 @@
+diff --git a/dist/vite/plugin.js b/dist/vite/plugin.js
+index 2a9bc7066ecd3819b9dd490d6a8cb543682cdbfa..5970ba093bbd6deac8340bdb58e9b0b8d8d63bff 100644
+--- a/dist/vite/plugin.js
++++ b/dist/vite/plugin.js
+@@ -440,7 +440,7 @@ const remixVitePlugin = (options = {}) => {
+         ...viteUserConfig,
+         mode: viteConfig.mode,
+         server: {
+-          ...viteUserConfig.server,
++          // ...viteUserConfig.server,
+           // when parent compiler runs in middleware mode to support
+           // custom servers, we don't want the child compiler also
+           // run in middleware mode as that will cause websocket port conflicts
