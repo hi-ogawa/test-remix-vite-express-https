@@ -15,16 +15,35 @@ const server = https.createServer(
   app
 );
 
-const viteDevServer = await createServer({
-  server: { middlewareMode: true, hmr: { server } },
-});
+let remixBuild;
 
-app.use(viteDevServer.middlewares);
+if (process.env.NODE_ENV === "production") {
+  // static assets
+  app.use(
+    "/assets",
+    express.static("build/client/assets", { immutable: true, maxAge: "1y" })
+  );
+  app.use(express.static("build/client", { maxAge: "1h" }));
+
+  // remix server build
+  remixBuild = await import("./build/server/index.js");
+
+} else {
+  // vite middleware
+  const viteDevServer = await createServer({
+    server: { middlewareMode: true, hmr: { server } },
+  });
+  app.use(viteDevServer.middlewares);
+
+  // remix server build
+  remixBuild = () =>
+    viteDevServer.ssrLoadModule(unstable_viteServerBuildModuleId);
+}
 
 app.all(
   "*",
   createRequestHandler({
-    build: () => viteDevServer.ssrLoadModule(unstable_viteServerBuildModuleId),
+    build: remixBuild,
   })
 );
 
