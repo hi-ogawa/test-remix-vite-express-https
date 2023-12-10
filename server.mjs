@@ -1,14 +1,9 @@
-import {
-  unstable_createViteServer,
-  unstable_loadViteServerBuild,
-} from "@remix-run/dev";
+import { unstable_viteServerBuildModuleId } from "@remix-run/dev";
 import { createRequestHandler } from "@remix-run/express";
-import { installGlobals } from "@remix-run/node";
 import express from "express";
 import https from "node:https";
 import fs from "node:fs";
-
-installGlobals();
+import { createServer } from "vite";
 
 const app = express();
 
@@ -20,29 +15,35 @@ const server = https.createServer(
   app
 );
 
-let vite =
-  process.env.NODE_ENV === "production"
-    ? undefined
-    : await unstable_createViteServer();
+let remixBuild;
 
-// handle asset requests
-if (vite) {
-  app.use(vite.middlewares);
-} else {
+if (process.env.NODE_ENV === "production") {
+  // static assets
   app.use(
-    "/build",
-    express.static("public/build", { immutable: true, maxAge: "1y" })
+    "/assets",
+    express.static("build/client/assets", { immutable: true, maxAge: "1y" })
   );
-}
-app.use(express.static("public", { maxAge: "1h" }));
+  app.use(express.static("build/client", { maxAge: "1h" }));
 
-// handle SSR requests
+  // remix server build
+  remixBuild = await import("./build/server/index.js");
+
+} else {
+  // vite middleware
+  const viteDevServer = await createServer({
+    server: { middlewareMode: true, hmr: { server } },
+  });
+  app.use(viteDevServer.middlewares);
+
+  // remix server build
+  remixBuild = () =>
+    viteDevServer.ssrLoadModule(unstable_viteServerBuildModuleId);
+}
+
 app.all(
   "*",
   createRequestHandler({
-    build: vite
-      ? () => unstable_loadViteServerBuild(vite)
-      : await import("./build/index.js"),
+    build: remixBuild,
   })
 );
 
